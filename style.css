@@ -39,7 +39,7 @@ nav {
 	z-index: 1;
 	transform: translateX(100%);
 	position: absolute;
-	top: 5%;
+	top: 5vh;
 	right: 0%;
 	display: flex;
 	justify-content: center;

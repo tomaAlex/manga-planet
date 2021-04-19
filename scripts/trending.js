@@ -8,6 +8,7 @@ const convert = (apiEntry) => {
 		image: apiEntry.posterImage.tiny,
 		synopsis: apiEntry.synopsis,
 		rank: apiEntry.ratingRank,
+		slug: apiEntry.slug,
 	};
 	return tredningManga.push(mangaObject);
 };
@@ -20,23 +21,26 @@ fetch("https://kitsu.io/api/edge/trending/manga")
 		return jsonResponse.data.map((element) => element.attributes);
 	})
 	.then((manga) => manga.forEach((entry) => tredningManga.push(convert(entry))))
-	.then(() => {
-		insertIntoDiv();
-	});
+	.then(() => insertIntoDiv());
+
+const getLinkFromSlug = (slug) => `https://www.anime-planet.com/manga/${slug}`;
+const goToMangaOrigin = (slug) => location.href = getLinkFromSlug(slug);
 
 const insertIntoDiv = () => {
 	tredningManga.forEach((entry) => {
 		if (entry.title) {
 			document.querySelector(".manga").innerHTML +=
-				`<div class="card">` +
-				`<div class="manga-title">${entry.title}</div>` +
-				`<div class="rating">Rating: ${entry.rating}</div>` +
-				`<div class="favourites">Favourites: ${entry.favourites}</div>` +
-				`<img
+				`
+				<div class="card" onclick="goToMangaOrigin('${entry.slug}')">
+				<div class="manga-title">${entry.title}</div>
+				<div class="rating">Rating: ${entry.rating}</div>
+				<div class="favourites">Favourites: ${entry.favourites}</div>
+				<img
 				class="manga-img"
 				src="${entry.image}"
-				/>` +
-				`</div>`;
+				/>
+				</div>
+				`;
 		}
 	});
 };
